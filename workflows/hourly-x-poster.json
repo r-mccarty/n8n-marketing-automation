@@ -1,0 +1,40 @@
+{
+  "name": "Hourly X Poster",
+  "active": false,
+  "versionId": "1",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{"field": "hours", "hoursInterval": 1}]
+        }
+      },
+      "name": "Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = [\"Building smarter homes with open-source hardware. #SmartHome #IoT\", \"Presence detection that respects your privacy. No cloud required. #HomeAutomation\", \"Hardware + software designed to work together. #HardwareOS #Tech\", \"Automating the mundane so you can focus on what matters. #SmartHome\", \"Open source, locally controlled, privacy-first smart home. #HomeAssistant #IoT\", \"From ESP32 sensors to full home automation. #Makers #DIY\", \"Your data stays in your home. #Privacy #LocalControl\", \"Crafting the future of home tech. #OpticWorks #Innovation\"];\nconst now = new Date();\nconst idx = (now.getHours() + Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000)) % messages.length;\nreturn [{ json: { text: messages[idx] } }];"
+      },
+      "name": "Get Tweet Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {"text": "={{ $json.text }}"},
+      "name": "Post to X",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [440, 0],
+      "credentials": {"twitterOAuth1Api": {"id": "1", "name": "X OAuth1 API"}}
+    }
+  ],
+  "connections": {
+    "Every Hour": {"main": [[{"node": "Get Tweet Content", "type": "main", "index": 0}]]},
+    "Get Tweet Content": {"main": [[{"node": "Post to X", "type": "main", "index": 0}]]}
+  },
+  "settings": {"executionOrder": "v1"}
+}
