@@ -1,0 +1,27 @@
+[Unit]
+Description=Tweet API for N8N
+Documentation=https://github.com/r-mccarty/n8n-marketing-automation
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/n8n/tweet-api.py
+WorkingDirectory=/opt/n8n
+Restart=always
+RestartSec=5
+
+# Security hardening
+User=root
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/n8n
+
+# Environment variables (optional - defaults are in script)
+# Environment=X_API_KEY=your-key
+# Environment=X_API_SECRET=your-secret
+# Environment=X_ACCESS_TOKEN=your-token
+# Environment=X_ACCESS_SECRET=your-secret
+
+[Install]
+WantedBy=multi-user.target

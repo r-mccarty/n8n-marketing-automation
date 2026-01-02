@@ -1,7 +1,7 @@
 {
-  "name": "Hourly X Poster",
+  "name": "Hourly X Poster (Simple)",
   "active": false,
-  "versionId": "1",
+  "versionId": "4",
   "nodes": [
     {
       "parameters": {
@@ -16,25 +16,37 @@
     },
     {
       "parameters": {
-        "jsCode": "const messages = [\"Building smarter homes with open-source hardware. #SmartHome #IoT\", \"Presence detection that respects your privacy. No cloud required. #HomeAutomation\", \"Hardware + software designed to work together. #HardwareOS #Tech\", \"Automating the mundane so you can focus on what matters. #SmartHome\", \"Open source, locally controlled, privacy-first smart home. #HomeAssistant #IoT\", \"From ESP32 sensors to full home automation. #Makers #DIY\", \"Your data stays in your home. #Privacy #LocalControl\", \"Crafting the future of home tech. #OpticWorks #Innovation\"];\nconst now = new Date();\nconst idx = (now.getHours() + Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000)) % messages.length;\nreturn [{ json: { text: messages[idx] } }];"
+        "jsCode": "const messages = [\n  'Building smarter homes with open-source hardware. #SmartHome #IoT',\n  'Presence detection that respects your privacy. No cloud required. #HomeAutomation',\n  'Hardware + software designed to work together. #HardwareOS #Tech',\n  'Automating the mundane so you can focus on what matters. #SmartHome',\n  'Open source, locally controlled, privacy-first smart home. #HomeAssistant #IoT',\n  'From ESP32 sensors to full home automation. #Makers #DIY',\n  'Your data stays in your home. #Privacy #LocalControl',\n  'Crafting the future of home tech. #OpticWorks #Innovation'\n];\n\nconst now = new Date();\nconst idx = (now.getHours() + Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000)) % messages.length;\n\nreturn [{ json: { text: messages[idx] } }];"
       },
-      "name": "Get Tweet Content",
+      "name": "Pick Message",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [220, 0]
     },
     {
-      "parameters": {"text": "={{ $json.text }}"},
-      "name": "Post to X",
-      "type": "n8n-nodes-base.twitter",
-      "typeVersion": 2,
-      "position": [440, 0],
-      "credentials": {"twitterOAuth1Api": {"id": "1", "name": "X OAuth1 API"}}
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:5680",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Content-Type", "value": "application/json"}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.text }) }}",
+        "options": {}
+      },
+      "name": "Post Tweet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 0]
     }
   ],
   "connections": {
-    "Every Hour": {"main": [[{"node": "Get Tweet Content", "type": "main", "index": 0}]]},
-    "Get Tweet Content": {"main": [[{"node": "Post to X", "type": "main", "index": 0}]]}
+    "Every Hour": {"main": [[{"node": "Pick Message", "type": "main", "index": 0}]]},
+    "Pick Message": {"main": [[{"node": "Post Tweet", "type": "main", "index": 0}]]}
   },
   "settings": {"executionOrder": "v1"}
 }

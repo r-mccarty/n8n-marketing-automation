@@ -5,14 +5,18 @@ N8N-powered marketing automation platform for OpticWorks. Self-hosted on N100 wi
 ## Quick Links
 
 - **N8N Dashboard:** https://n8n.optic.works
-- **X (Twitter):** @opticworks (TBD)
+- **X (Twitter):** [@ry_mccarty](https://twitter.com/ry_mccarty)
+- **GitHub:** https://github.com/r-mccarty/n8n-marketing-automation
 
 ## Overview
 
 This repo contains:
 - Docker Compose configuration for N8N deployment
+- Tweet API shim service for X OAuth signing
 - Exported workflows for marketing automation
-- Documentation for X API setup and Cloudflare configuration
+- Complete documentation for setup and configuration
+
+> **New here?** See [SETUP.md](SETUP.md) for step-by-step deployment instructions.
 
 ## Deployment
 
@@ -94,9 +98,18 @@ ssh n100 'curl -X POST http://127.0.0.1:5680 -H "Content-Type: application/json"
 
 ## Documentation
 
+- [**SETUP.md**](SETUP.md) - Complete step-by-step deployment guide
 - [X API Setup Guide](docs/x-api-setup.md) - Create X Developer account and get credentials
 - [Cloudflare Setup Guide](docs/cloudflare-setup.md) - Configure tunnel for n8n.optic.works
 - [Tweet API Shim](docs/tweet-api-shim.md) - OAuth shim service documentation
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/tweet-api.py` | OAuth shim service for X API |
+| `scripts/tweet-api.service` | Systemd unit file |
+| `scripts/backup-workflows.sh` | Export workflows from N8N |
 
 ## Maintenance
 
