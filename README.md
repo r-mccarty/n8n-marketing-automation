@@ -53,12 +53,30 @@ Once deployed and Cloudflare tunnel is configured:
 
 ## Workflows
 
-### Hourly X Poster
+### Hourly X Poster (Simple)
 Automated hourly tweets for OpticWorks brand awareness.
 
 - **Trigger:** Cron (every hour at :00)
-- **Action:** Posts tweet to @opticworks
-- **Content:** Rotating marketing messages
+- **Action:** Posts tweet via Tweet API shim
+- **Content:** Rotating marketing messages (8 variants)
+
+Uses the Tweet API shim service to handle OAuth signing. See [Tweet API Shim docs](docs/tweet-api-shim.md).
+
+## Tweet API Shim
+
+A lightweight Python service that handles X OAuth 1.0a signing, bypassing N8N's credential system.
+
+- **Location:** `/opt/n8n/tweet-api.py`
+- **Port:** 5680 (localhost only)
+- **Service:** `tweet-api.service`
+
+```bash
+# Check status
+ssh n100 "sudo systemctl status tweet-api"
+
+# Test manually
+ssh n100 'curl -X POST http://127.0.0.1:5680 -H "Content-Type: application/json" -d "{\"text\": \"Test tweet\"}"'
+```
 
 ## Configuration
 
@@ -78,6 +96,7 @@ Automated hourly tweets for OpticWorks brand awareness.
 
 - [X API Setup Guide](docs/x-api-setup.md) - Create X Developer account and get credentials
 - [Cloudflare Setup Guide](docs/cloudflare-setup.md) - Configure tunnel for n8n.optic.works
+- [Tweet API Shim](docs/tweet-api-shim.md) - OAuth shim service documentation
 
 ## Maintenance
 
