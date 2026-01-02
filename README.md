@@ -102,6 +102,7 @@ ssh n100 'curl -X POST http://127.0.0.1:5680 -H "Content-Type: application/json"
 - [X API Setup Guide](docs/x-api-setup.md) - Create X Developer account and get credentials
 - [Cloudflare Setup Guide](docs/cloudflare-setup.md) - Configure tunnel for n8n.optic.works
 - [Tweet API Shim](docs/tweet-api-shim.md) - OAuth shim service documentation
+- [**Social Platform Integrations**](docs/social-platform-integrations.md) - Discord, Threads, Facebook, Instagram, Reddit integration plans
 
 ## Scripts
 
